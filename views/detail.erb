@@ -1,0 +1,15 @@
+<body>
+  <p>タイトル</p>
+  <div>
+    <input type="text" id="title" name="title" value="<%=@title%>" readonly>
+  </div>
+  <p>内容</p>
+  <div>
+    <textarea id="content" name="content" row="5" readonly><%=@content%></textarea>
+  </div>
+  <form action='/memos/<%=@id%>'  method="POST">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="submit" value="削除" id="btn02">
+    <a href = "/memos/<%=@id%>/edit">編集</a>
+  </form>
+</body>
