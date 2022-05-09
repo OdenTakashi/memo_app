@@ -6,6 +6,9 @@
   <p>内容</p>
   <div>
     <textarea id="content" name="content" row="5" readonly><%=@content%></textarea>
+    <div>
+      <span class="time"><%=@time%></span>
+    </div>
   </div>
   <form action='/memos/<%=@id%>'  method="POST">
     <input type="hidden" name="_method" value="DELETE">

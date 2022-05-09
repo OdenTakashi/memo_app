@@ -78,3 +78,7 @@ textarea {
 .update-btn {
 	margin-top: 12px;
 }
+
+.time {
+	opacity: 0.5;
+}

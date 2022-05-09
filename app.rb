@@ -33,7 +33,8 @@ patch '/memos/:id' do
     memo = {
       'id' => params['id'],
       'title' => h(params['title']),
-      'content' => h(params['content'])
+      'content' => h(params['content']),
+      'time' => Time.now.strftime("%Y-%m-%d %H:%M:%S")
     }
     JSON.dump(memo, f)
   end
@@ -52,6 +53,7 @@ get '/memos/:id' do
   @id = memo['id']
   @title = memo['title']
   @content = memo['content']
+  @time = memo['time']
   erb :detail
 end
 
@@ -59,7 +61,8 @@ post '/memos' do
   memo = {
     'id' => SecureRandom.uuid,
     'title' => h(params['title']),
-    'content' => h(params['content'])
+    'content' => h(params['content']),
+    'time' => Time.now.strftime("%Y-%m-%d %H:%M:%S")
   }
   File.open("./db/memos_#{memo['id']}.json", 'w') do |f|
     JSON.dump(memo, f)
