@@ -18,3 +18,4 @@ $ bundle install
 ~~~
 $ ruby app.rb
 ~~~
+5. `http://localhost:4567/memos`にアクセスする
