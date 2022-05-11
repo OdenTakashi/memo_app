@@ -1,8 +1,8 @@
 <body>
-<% @memos.each do |memo|%>
+<% @memos.each do |row|%>
 	<ul>
 		<li id="memo-title">
-		<a href = "memos/<%="#{memo["id"]}"%>"><%="#{memo["title"]}"%></a>
+		<a href = "memos/<%="#{row['id']}"%>"><%="#{row['title']}"%></a>
 		</li>
 	</ul>
 <% end %>

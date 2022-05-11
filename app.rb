@@ -4,6 +4,7 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
 require 'pry'
+require 'pg'
 
 helpers do
   def h(text)
@@ -16,10 +17,8 @@ helpers do
 end
 
 get '/memos' do
-  files = Dir.glob('./db/*.json')
-  @memos = files.map do |file|
-    JSON.parse(File.open(file).read)
-  end
+  conn = PG.connect(dbname: 'memos')
+  @memos = conn.exec("SELECT * FROM memos")
   erb :index
 end
 
@@ -28,45 +27,20 @@ get '/memos/new' do
 end
 
 patch '/memos/:id' do
-  file_path = get_file_path(params[:id])
-  File.open(file_path.to_s, 'w') do |f|
-    memo = {
-      'id' => params['id'],
-      'title' => h(params['title']),
-      'content' => h(params['content']),
-      'time' => Time.now.strftime("%Y-%m-%d %H:%M:%S")
-    }
-    JSON.dump(memo, f)
-  end
+  conn = PG.connect(dbname: 'memos')
+  conn.exec("UPDATE memos SET title = '#{params['title']}', content = '#{params['content']}' WHERE id = #{params['id']}")
   redirect("/memos/#{params['id']}")
 end
 
 get '/memos/:id' do
-  file_path = get_file_path(params[:id])
-  if File.exist?(file_path)
-    (memo = File.open(file_path) do |file|
-       JSON.parse(file.read)
-     end)
-  else
-    redirect('/memos/file_not_found')
-  end
-  @id = memo['id']
-  @title = memo['title']
-  @content = memo['content']
-  @time = memo['time']
+  conn = PG.connect(dbname: 'memos')
+  @memos = conn.exec("SELECT * FROM memos WHERE id = #{params['id']}")
   erb :detail
 end
 
 post '/memos' do
-  memo = {
-    'id' => SecureRandom.uuid,
-    'title' => h(params['title']),
-    'content' => h(params['content']),
-    'time' => Time.now.strftime("%Y-%m-%d %H:%M:%S")
-  }
-  File.open("./db/memos_#{memo['id']}.json", 'w') do |f|
-    JSON.dump(memo, f)
-  end
+  conn = PG.connect(dbname: 'memos')
+  conn.exec("INSERT INTO memos (title, content) VALUES('#{params['title']}', '#{params['content']}')")
   redirect('/memos')
 end
 
@@ -75,22 +49,13 @@ get '/memos/file_not_found' do
 end
 
 get '/memos/:id/edit' do
-  file_path = get_file_path(params[:id])
-  if File.exist?(file_path)
-    (memo = File.open(file_path) do |file|
-       JSON.parse(file.read)
-     end)
-  else
-    redirect('/memos/file_not_found')
-  end
-  @id = memo['id']
-  @title = memo['title']
-  @content = memo['content']
+  conn = PG.connect(dbname: 'memos')
+  @memos = conn.exec("SELECT * FROM memos WHERE id = #{params['id']}")
   erb :edit
 end
 
 delete '/memos/:id' do
-  file_path = get_file_path(params[:id])
-  File.delete(file_path)
+  conn = PG.connect(dbname: 'memos')
+  conn.exec("DELETE FROM memos WHERE id = '#{params['id']}'")
   redirect('/memos')
 end
