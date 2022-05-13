@@ -19,7 +19,7 @@ class Memo
     @conn.exec("UPDATE memos SET title ='#{title}', content ='#{content}' WHERE id =#{id}")
   end
 
-  def select(id)
+  def find(id)
     @conn.exec("SELECT * FROM memos WHERE id = #{id}")
   end
 
@@ -27,7 +27,7 @@ class Memo
     @conn.exec("DELETE FROM memos WHERE id = '#{id}'")
   end
 
-  def get
+  def all
     @conn.exec('SELECT * FROM memos')
   end
 end
@@ -39,32 +39,30 @@ helpers do
 end
 
 get '/memos' do
-  detabase = Memo.new
-  @memos = detabase.get
+  memo = Memo.new
+  @memos = memo.all
   erb :index
 end
 
 get '/memos/new' do
-  @memos = Memo.new
-  @memos.create("#{params['title']}", "#{params['content']}")
   erb :new
 end
 
 patch '/memos/:id' do
-  detabase = Memo.new
-  @memos = detabase.update(params['title'], params['content'], params['id'])
+  memo = Memo.new
+  @memos = memo.update(h(params['title']), h(params['content']), params['id'])
   redirect("/memos/#{params['id']}")
 end
 
 get '/memos/:id' do
-  detabase = Memo.new
-  @memos = detabase.select(params['id'])
+  memo = Memo.new
+  @memos = memo.find(params['id'])
   erb :detail
 end
 
 post '/memos' do
-  detabase = Memo.new
-  @memos = detabase.create(params['title'], params['content'])
+  memo = Memo.new
+  @memos = memo.create(h(params['title']), h(params['content']))
   redirect('/memos')
 end
 
@@ -73,13 +71,13 @@ get '/memos/file_not_found' do
 end
 
 get '/memos/:id/edit' do
-  detabase = Memo.new
-  @memos = detabase.select(params['id'])
+  memo = Memo.new
+  @memos = memo.find(params['id'])
   erb :edit
 end
 
 delete '/memos/:id' do
-  detabase = Memo.new
-  @memos = detabase.delete(params["id"])
+  memo = Memo.new
+  @memos = memo.delete(params["id"])
   redirect('/memos')
 end
