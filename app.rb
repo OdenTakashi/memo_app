@@ -30,7 +30,7 @@ get '/memos/new' do
 end
 
 patch '/memos/:id' do
-  @conn.exec("UPDATE memos SET title ='#{params['title']}', content ='#{params['content']}' WHERE id =#{params['id']}")
+  @conn.exec("UPDATE memos SET title ='#{h(params['title'])}', content ='#{h(params['content'])}' WHERE id =#{params['id']}")
   redirect("/memos/#{params['id']}")
 end
 
@@ -40,7 +40,7 @@ get '/memos/:id' do
 end
 
 post '/memos' do
-  @conn.exec("INSERT INTO memos (title, content) VALUES('#{params['title']}', '#{params['content']}')")
+  @conn.exec("INSERT INTO memos (title, content) VALUES('#{h(params['title'])}', '#{h(params['content'])}')")
   redirect('/memos')
 end
 
