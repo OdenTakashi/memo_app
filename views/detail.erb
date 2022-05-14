@@ -1,14 +1,16 @@
 <body>
   <p>タイトル</p>
   <div>
-    <input type="text" id="title" name="title" value="<%=@title%>" readonly>
+    <h2><%=@title%></h2>
   </div>
+
   <p>内容</p>
   <div>
-    <textarea id="content" name="content" row="5" readonly><%=@content%></textarea>
-    <div>
-      <span class="time"><%=@time%></span>
-    </div>
+    <%=@content%>
+  </div>
+
+  <div>
+    <span class="time"><%=@time%></span>
   </div>
   <form action='/memos/<%=@id%>'  method="POST">
     <input type="hidden" name="_method" value="DELETE">
