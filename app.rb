@@ -56,7 +56,7 @@ end
 
 get '/memos/:id' do
   memo = Memo.new
-  @memos = memo.find(params['id'])
+  @memo = memo.find(params['id'])
   erb :detail
 end
 
