@@ -13,6 +13,11 @@ helpers do
   def get_file_path(id)
     "./db/memos_#{id}.json"
   end
+
+  def open_file(path)
+    return File.open(path) {|file| JSON.parse(file.read)} if File.exist?(path)
+    nil
+  end
 end
 
 get '/memos' do
@@ -47,11 +52,8 @@ end
 
 get '/memos/:id' do
   file_path = get_file_path(params[:id])
-  if File.exist?(file_path)
-    memo = File.open(file_path) do |file|
-      JSON.parse(file.read)
-    end
-  else
+  memo = open_file(file_path)
+  if memo == nil
     redirect('/memos/file_not_found')
   end
   @id = memo['id']
@@ -76,11 +78,8 @@ end
 
 get '/memos/:id/edit' do
   file_path = get_file_path(params[:id])
-  if File.exist?(file_path)
-    memo = File.open(file_path) do |file|
-      JSON.parse(file.read)
-    end
-  else
+  memo = open_file(file_path)
+  if memo == nil
     redirect('/memos/file_not_found')
   end
   @id = memo['id']
