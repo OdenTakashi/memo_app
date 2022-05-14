@@ -15,8 +15,8 @@ helpers do
   end
 
   def open_file(path)
-    return File.open(path) {|file| JSON.parse(file.read)} if File.exist?(path)
-    nil
+    return nil unless File.exist?(path)
+    File.open(path) {|file| JSON.parse(file.read)}
   end
 end
 
