@@ -29,7 +29,7 @@ end
 
 patch '/memos/:id' do
   file_path = get_file_path(params[:id])
-  File.open(file_path.to_s, 'w') do |f|
+  File.open(file_path, 'w') do |f|
     memo = {
       'id' => params['id'],
       'title' => h(params['title']),
