@@ -41,12 +41,16 @@ patch '/memos/:id' do
   redirect("/memos/#{params['id']}")
 end
 
+get '/memos/file_not_found' do
+  erb :file_not_found
+end
+
 get '/memos/:id' do
   file_path = get_file_path(params[:id])
   if File.exist?(file_path)
-    (memo = File.open(file_path) do |file|
-       JSON.parse(file.read)
-     end)
+    memo = File.open(file_path) do |file|
+      JSON.parse(file.read)
+    end
   else
     redirect('/memos/file_not_found')
   end
@@ -68,10 +72,6 @@ post '/memos' do
     JSON.dump(memo, f)
   end
   redirect('/memos')
-end
-
-get '/memos/file_not_found' do
-  erb :file_not_found
 end
 
 get '/memos/:id/edit' do
