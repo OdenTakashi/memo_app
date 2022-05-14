@@ -34,7 +34,7 @@ patch '/memos/:id' do
       'id' => params['id'],
       'title' => h(params['title']),
       'content' => h(params['content']),
-      'time' => Time.now.strftime("%Y-%m-%d %H:%M:%S")
+      'time' => Time.now.strftime('%Y-%m-%d %H:%M:%S')
     }
     JSON.dump(memo, f)
   end
@@ -66,7 +66,7 @@ post '/memos' do
     'id' => SecureRandom.uuid,
     'title' => h(params['title']),
     'content' => h(params['content']),
-    'time' => Time.now.strftime("%Y-%m-%d %H:%M:%S")
+    'time' => Time.now.strftime('%Y-%m-%d %H:%M:%S')
   }
   File.open("./db/memos_#{memo['id']}.json", 'w') do |f|
     JSON.dump(memo, f)
@@ -77,9 +77,9 @@ end
 get '/memos/:id/edit' do
   file_path = get_file_path(params[:id])
   if File.exist?(file_path)
-    (memo = File.open(file_path) do |file|
-       JSON.parse(file.read)
-     end)
+    memo = File.open(file_path) do |file|
+      JSON.parse(file.read)
+    end
   else
     redirect('/memos/file_not_found')
   end
