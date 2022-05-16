@@ -53,9 +53,7 @@ end
 get '/memos/:id' do
   file_path = get_file_path(params[:id])
   memo = open_file(file_path)
-  if memo.nil?
-    redirect('/memos/file_not_found')
-  end
+  redirect('/memos/file_not_found') if memo.nil?
   @id = memo['id']
   @title = memo['title']
   @content = memo['content']
@@ -79,9 +77,7 @@ end
 get '/memos/:id/edit' do
   file_path = get_file_path(params[:id])
   memo = open_file(file_path)
-  if memo.nil?
-    redirect('/memos/file_not_found')
-  end
+  redirect('/memos/file_not_found') if memo.nil?
   @id = memo['id']
   @title = memo['title']
   @content = memo['content']
