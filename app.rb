@@ -15,7 +15,7 @@ helpers do
   end
 
   def open_file(path)
-    return nil unless File.exist?(path)
+    return unless File.exist?(path)
     File.open(path) {|file| JSON.parse(file.read)}
   end
 end
@@ -53,7 +53,7 @@ end
 get '/memos/:id' do
   file_path = get_file_path(params[:id])
   memo = open_file(file_path)
-  if memo == nil
+  if memo.nil?
     redirect('/memos/file_not_found')
   end
   @id = memo['id']
@@ -79,7 +79,7 @@ end
 get '/memos/:id/edit' do
   file_path = get_file_path(params[:id])
   memo = open_file(file_path)
-  if memo == nil
+  if memo.nil?
     redirect('/memos/file_not_found')
   end
   @id = memo['id']
