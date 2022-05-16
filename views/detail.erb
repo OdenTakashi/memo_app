@@ -1,0 +1,20 @@
+<body>
+  <p>タイトル</p>
+  <div>
+    <h2><%=@title%></h2>
+  </div>
+
+  <p>内容</p>
+  <div>
+    <%=@content%>
+  </div>
+
+  <div>
+    <span class="time"><%=@time%></span>
+  </div>
+  <form action='/memos/<%=@id%>'  method="POST">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="submit" value="削除" id="btn02">
+    <a href = "/memos/<%=@id%>/edit">編集</a>
+  </form>
+</body>
