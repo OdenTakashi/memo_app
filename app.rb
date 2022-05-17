@@ -49,8 +49,10 @@ get '/memos/new' do
 end
 
 patch '/memos/:id' do
+ memo_db_test
   memo = Memo.new
   @memos = memo.update(h(params['title']), h(params['content']), params['id'])
+ memo_db
   redirect("/memos/#{params['id']}")
 end
 
@@ -67,8 +69,10 @@ get '/memos/:id' do
 end
 
 post '/memos' do
+  memo_db_test
   memo = Memo.new
   @memos = memo.create(h(params['title']), h(params['content']))
+ memo_db
   redirect('/memos')
 end
 
