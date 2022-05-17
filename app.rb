@@ -6,22 +6,41 @@ require 'json'
 require 'pry'
 require 'pg'
 
-before do
-  @conn = PG.connect(dbname: 'memos')
+class Memo 
+  def initialize
+    @conn = PG.connect(dbname: 'memos')
+  end
+
+  def create(title, content)
+    @conn.exec("INSERT INTO memos (title, content) VALUES('#{title}', '#{content}')")
+  end
+
+  def update(title, content, id)
+    @conn.exec("UPDATE memos SET title ='#{title}', content ='#{content}' WHERE id =#{id}")
+  end
+
+  def find(id)
+    @conn.exec("SELECT * FROM memos WHERE id = #{id}")
+  end
+
+  def delete(id)
+    @conn.exec("DELETE FROM memos WHERE id = '#{id}'")
+  end
+
+  def all
+    @conn.exec("SELECT * FROM memos")
+  end
 end
 
 helpers do
   def h(text)
     Rack::Utils.escape_html(text)
   end
-
-  def select(id)
-    @conn.exec("SELECT * FROM memos WHERE id = #{id}")
-  end
 end
 
 get '/memos' do
-  @memos = @conn.exec('SELECT * FROM memos')
+  memo = Memo.new
+  @memos = memo.all
   erb :index
 end
 
@@ -30,17 +49,30 @@ get '/memos/new' do
 end
 
 patch '/memos/:id' do
-  @conn.exec("UPDATE memos SET title ='#{h(params['title'])}', content ='#{h(params['content'])}' WHERE id =#{params['id']}")
+ memo_db_test
+  memo = Memo.new
+  @memos = memo.update(h(params['title']), h(params['content']), params['id'])
+ memo_db
   redirect("/memos/#{params['id']}")
 end
 
+get '/memos/deta_not_found' do 
+  erb :deta_not_found
+end
+
 get '/memos/:id' do
-  @memos = select(params['id'])
+  memo = Memo.new
+  count = memo.find(params['id']).ntuples
+  redirect('/memos/deta_not_found') if count == 0
+  @memo = memo.find(params['id'])
   erb :detail
 end
 
 post '/memos' do
-  @conn.exec("INSERT INTO memos (title, content) VALUES('#{h(params['title'])}', '#{h(params['content'])}')")
+  memo_db_test
+  memo = Memo.new
+  @memos = memo.create(h(params['title']), h(params['content']))
+ memo_db
   redirect('/memos')
 end
 
@@ -49,11 +81,15 @@ get '/memos/file_not_found' do
 end
 
 get '/memos/:id/edit' do
-  @memos = select(params['id'])
+  memo = Memo.new
+  count = memo.find(params['id']).ntuples
+  redirect('/memos/deta_not_found') if count == 0
+  @memos = memo.find(params['id'])
   erb :edit
 end
 
 delete '/memos/:id' do
-  @conn.exec("DELETE FROM memos WHERE id = '#{params['id']}'")
+  memo = Memo.new
+  @memos = memo.delete(params["id"])
   redirect('/memos')
 end
