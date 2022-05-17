@@ -28,7 +28,7 @@ class Memo
   end
 
   def all
-    @conn.exec('SELECT * FROM memos')
+    @conn.exec("SELECT * FROM memos")
   end
 end
 
@@ -54,8 +54,14 @@ patch '/memos/:id' do
   redirect("/memos/#{params['id']}")
 end
 
+get '/memos/deta_not_found' do 
+  erb :deta_not_found
+end
+
 get '/memos/:id' do
   memo = Memo.new
+  count = memo.find(params['id']).ntuples
+  redirect('/memos/deta_not_found') if count == 0
   @memo = memo.find(params['id'])
   erb :detail
 end
@@ -72,6 +78,8 @@ end
 
 get '/memos/:id/edit' do
   memo = Memo.new
+  count = memo.find(params['id']).ntuples
+  redirect('/memos/deta_not_found') if count == 0
   @memos = memo.find(params['id'])
   erb :edit
 end
