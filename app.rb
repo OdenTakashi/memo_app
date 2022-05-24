@@ -54,14 +54,12 @@ patch '/memos/:id' do
   redirect("/memos/#{params['id']}")
 end
 
-get '/memos/deta_not_found' do 
-  erb :deta_not_found
+not_found do 
+  'ファイルが存在しません'
 end
 
 get '/memos/:id' do
   memo = Memo.new
-  count = memo.find(params['id']).ntuples
-  redirect('/memos/deta_not_found') if count == 0
   @memo = memo.find(params['id'])
   erb :detail
 end
@@ -72,14 +70,8 @@ post '/memos' do
   redirect('/memos')
 end
 
-get '/memos/file_not_found' do
-  erb :file_not_found
-end
-
 get '/memos/:id/edit' do
   memo = Memo.new
-  count = memo.find(params['id']).ntuples
-  redirect('/memos/deta_not_found') if count == 0
   @memos = memo.find(params['id'])
   erb :edit
 end
