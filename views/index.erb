@@ -2,7 +2,7 @@
 <% @memos.each do |row|%>
 	<ul>
 		<li id="memo-title">
-		<a href = "memos/<%="#{row['id']}"%>"><%="#{row['title']}"%></a>
+		<a href = "memos/<%="#{row['id']}"%>"><%="#{h(row['title'])}"%></a>
 		</li>
 	</ul>
 <% end %>

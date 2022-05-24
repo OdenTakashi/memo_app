@@ -50,7 +50,7 @@ end
 
 patch '/memos/:id' do
   memo = Memo.new
-  @memos = memo.update(h(params['title']), h(params['content']), params['id'])
+  @memos = memo.update(params['title'], params['content'], params['id'])
   redirect("/memos/#{params['id']}")
 end
 
@@ -72,7 +72,7 @@ end
 
 post '/memos' do
   memo = Memo.new
-  @memos = memo.create(h(params['title']), h(params['content']))
+  @memos = memo.create(params['title'], params['content'])
   redirect('/memos')
 end
 

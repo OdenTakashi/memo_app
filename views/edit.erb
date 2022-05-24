@@ -3,11 +3,11 @@
     <form action='/memos/<%=row['id']%>' method="POST">	
       <p>タイトル</p>
       <div>
-        <input type="text" id="title" name="title" value="<%=row['title']%>">
+        <input type="text" id="title" name="title" value="<%=h(row['title'])%>">
       </div>
       <p>内容</p>
       <div>
-        <textarea id="content" name="content" row="5"><%=row['content']%></textarea>
+        <textarea id="content" name="content" row="5"><%=h(row['content'])%></textarea>
       </div>
       <div class="update-btn">
         <input type="hidden" name="_method" value="PATCH">

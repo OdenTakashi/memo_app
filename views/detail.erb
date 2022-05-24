@@ -2,11 +2,11 @@
   <p>タイトル</p>
   <%@memo.each do |row|%>
     <div>
-      <input type="text" id="title" name="title" value="<%=row['title']%>" readonly>
+      <%=h(row['title'])%>
     </div>
     <p>内容</p>
     <div>
-      <textarea id="content" name="content" row="5" readonly><%=row['content']%></textarea>
+      <%=h(row['content'])%>
     </div>
     <form action='/memos/<%=row['id']%>'  method="POST">
       <input type="hidden" name="_method" value="DELETE">
