@@ -28,7 +28,7 @@ class Memo
   end
 
   def all
-    @conn.exec("SELECT * FROM memos")
+    @conn.exec("SELECT * FROM memos ORDER BY id ASC")
   end
 end
 
