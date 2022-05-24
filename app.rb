@@ -12,19 +12,19 @@ class Memo
   end
 
   def create(title, content)
-    @conn.exec("INSERT INTO memos (title, content) VALUES('#{title}', '#{content}')")
+    @conn.exec_params("INSERT INTO memos (title, content) VALUES($1, $2)", [title, content])
   end
 
   def update(title, content, id)
-    @conn.exec("UPDATE memos SET title ='#{title}', content ='#{content}' WHERE id =#{id}")
+    @conn.exec_params("UPDATE memos SET title =$1, content =$2 WHERE id =$3", [title, content, id])
   end
 
   def find(id)
-    @conn.exec("SELECT * FROM memos WHERE id = #{id}")
+    @conn.exec_params("SELECT * FROM memos WHERE id =$1", [id])
   end
 
   def delete(id)
-    @conn.exec("DELETE FROM memos WHERE id = '#{id}'")
+    @conn.exec("DELETE FROM memos WHERE id =$1", [id])
   end
 
   def all
