@@ -58,14 +58,10 @@ not_found do
   'ファイルが存在しません'
 end
 
-get '/memos/deta_not_found' do
-  erb :deta_not_found
-end
-
 get '/memos/:id' do
   memo = Memo.new
   count = memo.find(params['id']).ntuples
-  redirect('/memos/deta_not_found') if count.zero?
+  status 404 if count.zero?
   @memo = memo.find(params['id'])
   erb :detail
 end
@@ -79,7 +75,7 @@ end
 get '/memos/:id/edit' do
   memo = Memo.new
   count = memo.find(params['id']).ntuples
-  redirect('/memos/deta_not_found') if count.zero?
+  status 404 if count.zero?
   @memos = memo.find(params['id'])
   erb :edit
 end
