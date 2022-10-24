@@ -1,17 +1,20 @@
 <body>
   <p>タイトル</p>
-  <%@memo.each do |row|%>
-    <div>
-      <%=h(row['title'])%>
-    </div>
-    <p>内容</p>
-    <div>
-      <%=h(row['content'])%>
-    </div>
-    <form action='/memos/<%=row['id']%>'  method="POST">
-      <input type="hidden" name="_method" value="DELETE">
-      <input type="submit" value="削除" id="btn02">
-      <a href = "/memos/<%=row['id']%>/edit">編集</a>
-    </form>
-  <%end%>
+  <div>
+    <h2><%=@title%></h2>
+  </div>
+
+  <p>内容</p>
+  <div>
+    <%=@content%>
+  </div>
+
+  <div>
+    <span class="time"><%=@time%></span>
+  </div>
+  <form action='/memos/<%=@id%>'  method="POST">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="submit" value="削除" id="btn02">
+    <a href = "/memos/<%=@id%>/edit">編集</a>
+  </form>
 </body>

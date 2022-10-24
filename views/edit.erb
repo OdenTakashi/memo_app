@@ -1,18 +1,16 @@
 <body>
-  <%@memos.each do |row|%>
-    <form action='/memos/<%=row['id']%>' method="POST">	
-      <p>タイトル</p>
-      <div>
-        <input type="text" id="title" name="title" value="<%=h(row['title'])%>">
-      </div>
-      <p>内容</p>
-      <div>
-        <textarea id="content" name="content" row="5"><%=h(row['content'])%></textarea>
-      </div>
-      <div class="update-btn">
-        <input type="hidden" name="_method" value="PATCH">
-        <input type="submit" value="更新" id="btn02">
-      </div>
-    </form>
-  <%end%>
+  <form action="/memos/<%=@id%>" method="POST">	
+    <p>タイトル</p>
+    <div>
+      <input type="text" id="title" name="title" value="<%=@title%>">
+    </div>
+    <p>内容</p>
+    <div>
+      <textarea id="content" name="content" row="5"><%=@content%></textarea>
+    </div>
+    <div class="update-btn">
+			<input type="hidden" name="_method" value="PATCH">
+      <input type="submit" value="更新" id="btn02">
+    </div>
+  </form>
 </body>
